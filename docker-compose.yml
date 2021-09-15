@@ -1,6 +1,7 @@
 version: "3.9"
 services:
     zookeeper:
+        mem_limit: 250000000
         container_name: zookeeper
         image: 'bitnami/zookeeper:latest'
         networks:
@@ -8,6 +9,7 @@ services:
         environment:
             - ALLOW_ANONYMOUS_LOGIN=yes
     kafka:
+        mem_limit: 750000000
         depends_on:
             - zookeeper
         container_name: kafka-server
@@ -24,11 +26,13 @@ services:
             timeout: 10s
             retries: 4
     redis:
+        mem_limit: 50000000
         container_name: redis
         image: 'redis:latest'
         networks:
             - app-tier
     utxo-tracker:
+        mem_limit: 500000000
         image: luivatra/utxotracker:latest
         container_name: utxo-tracker
         depends_on:
@@ -38,6 +42,7 @@ services:
             - app-tier
         env_file: config.env
     pool-resolver:
+        mem_limit: 500000000
         image: luivatra/poolresolver:latest
         container_name: pool-resolver
         depends_on:
@@ -46,6 +51,7 @@ services:
             - app-tier
         env_file: config.env
     amm-executor:
+        mem_limit: 500000000
         image: luivatra/ammexecutor:latest
         container_name: amm-executor
         depends_on:
