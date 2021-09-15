@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+    zookeeper:
+        container_name: zookeeper
+        image: 'bitnami/zookeeper:latest'
+        networks:
+            - app-tier
+        environment:
+            - ALLOW_ANONYMOUS_LOGIN=yes
+    kafka:
+        depends_on:
+            - zookeeper
+        container_name: kafka-server
+        image: 'bitnami/kafka:latest'
+        networks:
+            - app-tier
+        environment:
+            - ALLOW_PLAINTEXT_LISTENER=yes
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+        healthcheck:
+            test:
+                ["CMD", "kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
+            interval: 30s
+            timeout: 10s
+            retries: 4
+    redis:
+        container_name: redis
+        image: 'redis:latest'
+        networks:
+            - app-tier
+    utxo-tracker:
+        image: luivatra/utxotracker:latest
+        container_name: utxo-tracker
+        depends_on:
+            - redis
+            - kafka
+        networks:
+            - app-tier
+        env_file: config.env
+    pool-resolver:
+        image: luivatra/poolresolver:latest
+        container_name: pool-resolver
+        depends_on:
+            - kafka
+        networks:
+            - app-tier
+        env_file: config.env
+    amm-executor:
+        image: luivatra/ammexecutor:latest
+        container_name: amm-executor
+        depends_on:
+            - kafka
+        networks:
+            - app-tier
+        env_file: config.env
+networks:
+    app-tier: {}
