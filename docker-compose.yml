@@ -31,6 +31,8 @@ services:
         image: 'redis:latest'
         networks:
             - app-tier
+        volumes:
+            - redis-data:/data
     utxo-tracker:
         mem_limit: 500000000
         image: luivatra/utxotracker:latest
@@ -61,3 +63,5 @@ services:
         env_file: config.env
 networks:
     app-tier: {}
+volumes:
+    redis-data:
