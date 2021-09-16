@@ -1,7 +1,7 @@
 version: "3.9"
 services:
     zookeeper:
-        mem_limit: 250000000
+        mem_limit: 500000000
         container_name: zookeeper
         image: 'bitnami/zookeeper:latest'
         networks:
@@ -9,7 +9,7 @@ services:
         environment:
             - ALLOW_ANONYMOUS_LOGIN=yes
     kafka:
-        mem_limit: 750000000
+        mem_limit: 1000000000
         depends_on:
             - zookeeper
         container_name: kafka-server
