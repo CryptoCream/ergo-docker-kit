@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  ergo-node:
+    container_name: ergo_node
+    image: 'luivatra/ergo:latest'
+    volumes:
+      - ./ergo.conf:/etc/myergo.conf
+      - ./.ergo:/home/ergo/.ergo
+    environment:
+      - MAX_HEAP=3G
+      - LD_BIND_NOW=1
+    networks:
+      - app-tier
+    ports:
+      - '9030:9030'
+      - '127.0.0.1:9053:9053'
+    command: "--mainnet -c /etc/myergo.conf"
+networks:
+  app-tier: {}

@@ -1,3 +1,3 @@
-cd %~dp0
+cd %~dp0/Ergo-node
 docker compose down
 pause
