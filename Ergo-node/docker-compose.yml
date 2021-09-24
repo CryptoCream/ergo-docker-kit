@@ -5,10 +5,9 @@ services:
     image: 'luivatra/ergo:latest'
     volumes:
       - ./ergo.conf:/etc/myergo.conf
-      - ./.ergo:/home/ergo/.ergo
+      - ergo-node:/home/ergo/.ergo
     environment:
       - MAX_HEAP=3G
-      - LD_BIND_NOW=1
     networks:
       - app-tier
     ports:
@@ -17,3 +16,5 @@ services:
     command: "--mainnet -c /etc/myergo.conf"
 networks:
   app-tier: {}
+volumes:
+  ergo-node:
