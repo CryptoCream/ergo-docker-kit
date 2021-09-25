@@ -9,12 +9,14 @@ services:
     environment:
       - MAX_HEAP=3G
     networks:
-      - app-tier
+      - ergo-net
     ports:
       - '9030:9030'
       - '127.0.0.1:9053:9053'
     command: "--mainnet -c /etc/myergo.conf"
 networks:
-  app-tier: {}
+  ergo-net:
+    external: true
+    name: ergo-net
 volumes:
   ergo-node:
